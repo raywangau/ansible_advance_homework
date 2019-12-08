@@ -1,2 +1,23 @@
 ---
 # tasks file for db-tier
+- name: Install postgresql-server
+  package:
+    name: "{{ db_packages }}"
+    state: latest
+
+- name: Checking if {{ db_data_file }} exists
+  stat:
+    path: "{{ db_data_file }}"
+  ignore_errors: yes
+  register: postgres_check
+
+  notify:
+    - Enable postgresql service at boot
+    - Restart postgresql service
+
+- name: Initializing postgresql db
+  shell: /bin/postgresql-setup initdb
+  when: not postgres_check.stat.exists
+  notify:
+    - Enable postgresql service at boot
+    - Start postgresql service

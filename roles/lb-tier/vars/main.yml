@@ -1,2 +1,9 @@
 ---
 # vars file for lb-tier
+lb_packages:
+   - haproxy
+
+lb_services:
+   - haproxy.service
+
+lb_path: /etc/haproxy

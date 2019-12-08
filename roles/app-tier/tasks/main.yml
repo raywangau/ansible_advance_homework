@@ -1,2 +1,29 @@
 ---
 # tasks file for app-tier
+- name: Install tomcat
+  package:
+    name: "{{ app_packages }}"
+    state: latest
+
+  notify:
+  - Enable tomcat at boot
+  - Start tomcat service
+
+- name: Create ansible tomcat directory
+  file:
+    path: "{{ app_path }}"
+    state: directory
+
+  notify:
+  - Enable tomcat at boot
+  - Restart tomcat service
+
+- name: Copy static index.html to tomcat webapps/ansible/index.html
+  template:
+    src: index.html.j2
+    dest: "{{ app_path }}/index.html"
+    mode: 0644
+
+  notify:
+  - Enable tomcat at boot
+  - Restart tomcat service

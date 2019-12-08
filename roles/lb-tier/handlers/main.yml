@@ -1,2 +1,19 @@
 ---
 # handlers file for lb-tier
+- name: Enable haproxy at boot
+  service:
+    name: "{{ item }}"
+    enabled: yes
+  loop: "{{ lb_services }}"
+
+- name: Start haproxy service
+  service:
+    name: "{{ item }}"
+    state: started
+  loop: "{{ lb_services }}"
+
+- name: Restart haproxy service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop: "{{ lb_services }}"

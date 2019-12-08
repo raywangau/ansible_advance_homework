@@ -1,2 +1,27 @@
 ---
 # tasks file for lb-tier
+- name: Install haproxy package
+  package:
+    name: "{{ lb_packages }}"
+    state: latest
+  notify:
+    - Enable haproxy at boot
+    - Start haproxy service
+
+- name: Create haproxy directory
+  file:
+    path: "{{ lb_path }}"
+    state: directory
+  ignore_errors: yes
+  notify:
+    - Enable haproxy at boot
+    - Start haproxy service
+
+- name: Copy static haproxy.cfg to /etc/haproxy/haproxy.cfg
+  template:
+    src: haproxy.cfg.j2
+    dest: "{{ lb_path }}/haproxy.cfg"
+    mode: 0644
+  notify:
+    - Enable haproxy at boot
+    - Restart haproxy service

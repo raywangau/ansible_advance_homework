@@ -1,2 +1,19 @@
 ---
 # handlers file for app-tier
+- name: Enable tomcat at boot
+  service:
+    name: "{{ item }}"
+    enabled: yes
+  loop: "{{ app_services }}"
+
+- name: Start tomcat service
+  service:
+    name: "{{ item }}" 
+    state: started
+  loop: "{{ app_services }}"
+
+- name: Restart tomcat service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop: "{{ app_services }}"
