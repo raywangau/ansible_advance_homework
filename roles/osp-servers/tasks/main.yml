@@ -1,10 +1,54 @@
 ---
-
-# tasks file for osp.servers
+# tasks file for osp-servers
 - name: Create new server instances and attaches them a network and passes metadata to the instance
-
+  os_server:
+    cloud: ospcloud
+    name: "{{ item.0.name }}"
+    image: "{{ item.0.image }}"
+    key_name: "{{ item.0.key_name }}"
+    flavor: "{{ item.0.flavor }}"
+    security_groups: "{{ item.0.security_group }}"
+    nics:
+      - net-name: int_network
+    meta: "{{ item.1 }}"
+    userdata: |
+      {%- raw -%}#!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      {% endraw %}
+  register: instanceip
+  with_subelements:
+    - "{{ osp_servers }}"
+    - meta
+  tags: instance-create
 
 - name: Add floating IP to Servers
-   
+  os_floating_ip:
+    cloud: ospcloud
+    state: present
+    reuse: yes
+    server: "{{ item.value.name }}"
+    network: ext_network
+    wait: true
+    timeout: 180
+  register: instancefloatingip
+  with_dict: "{{ osp_servers }}"
+  tags: instance-floatingip
 
-- name: Wait for server to be available
+- name: Fetch Instance Info
+  os_server_info:
+    cloud: ospcloud
+    region_name: RegionOne
+  register: instanceinfo
+  tags:
+    - instance-info
+    - instance-start
+
+- name: Start VM instances if not active
+  os_server_action:
+    cloud: ospcloud
+    server: "{{ item.name }}"
+    action: start
+  when: item.vm_state != "active"
+  with_items: "{{ instanceinfo.openstack_servers }}"
+  tags: instance-start
