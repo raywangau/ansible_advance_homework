@@ -1,2 +1,4 @@
 ---
 # vars file for base-config
+instance_repo_url: http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+instance_repo_dir: /etc/yum.repos.d
