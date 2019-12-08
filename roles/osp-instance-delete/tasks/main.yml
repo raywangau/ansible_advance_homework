@@ -15,5 +15,6 @@
     name: "{{ item.name }}"
     state: absent
     wait: yes
-  loop: "{{ result.ansible_facts.openstack_servers }}"
+#  loop: "{{ result.ansible_facts.openstack_servers }}"
+  with_items: "{{ result.openstack_servers }}"
   tags: instance-stop
