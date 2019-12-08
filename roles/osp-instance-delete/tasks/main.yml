@@ -15,5 +15,5 @@
     server: "{{ item.name }}"
     state: absent
     wait: yes
-  loop: "{{ result.openstack_servers }}"
+  loop: "{{ result.ansible_facts.openstack_servers }}"
   tags: instance-stop
