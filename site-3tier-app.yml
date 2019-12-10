@@ -5,6 +5,10 @@
 
 # Setup front-end load balancer tier
 
+- name: testing connectivity to frontends:
+  ping:
+    data: "ssh connectivity OK"
+  retries: 3
 
 - name: setup load-balancer tier
   hosts: frontends
@@ -15,6 +19,11 @@
 
 # Setup application servers tier
 
+- name: testing connectivity to apps:
+  ping:
+    data: "ssh connectivity OK"
+  retries: 3
+
 - name: setup app tier
   hosts: apps
   become: yes
@@ -24,6 +33,11 @@
     - {name: app-tier, tags: [apps, tomcat]}
 
 # Setup database tier
+
+- name: testing connectivity to appdbs:
+  ping:
+    data: "ssh connectivity OK"
+  retries: 3
 
 - name: setup database tier
   become: yes
