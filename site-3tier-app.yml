@@ -5,7 +5,7 @@
 
 # Setup front-end load balancer tier
 
-- name: testing connectivity to frontends:
+- name: testing connectivity to frontends
   ping:
     data: "ssh connectivity OK"
   retries: 3
