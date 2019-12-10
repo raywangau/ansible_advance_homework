@@ -19,7 +19,7 @@
 
 # Setup application servers tier
 
-- name: testing connectivity to apps:
+- name: testing connectivity to apps
   ping:
     data: "ssh connectivity OK"
   retries: 3
@@ -34,7 +34,7 @@
 
 # Setup database tier
 
-- name: testing connectivity to appdbs:
+- name: testing connectivity to appdbs
   ping:
     data: "ssh connectivity OK"
   retries: 3
