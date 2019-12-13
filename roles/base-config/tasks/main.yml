@@ -4,6 +4,8 @@
   wait_for_connection:
     connect_timeout: 10
 
+- debug: var=ansible_facts
+
 - name: Congigure instance to use the organization's local yum repository
   get_url:
     url: "{{ instance_repo_url }}"
