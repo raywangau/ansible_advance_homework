@@ -4,8 +4,6 @@
   wait_for_connection:
     connect_timeout: 10
 
-- debug: var=ansible_facts
-
 - name: Congigure instance to use the organization's local yum repository
   get_url:
     url: "{{ instance_repo_url }}"
@@ -14,3 +12,4 @@
     owner: root
     group: root
     mode: "0644"
+  when: ansible_facts['virtualization_type'] == 'openstack'
