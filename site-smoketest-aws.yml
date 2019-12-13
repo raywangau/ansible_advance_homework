@@ -6,12 +6,11 @@
       url: http://{{ inventory_hostname }}
       return_content: yes
     register: webpage
+    tags:
+      - osp.smoke
 
   - name: Fail if 'Ansible has done its job' is not in the page content
-#    fail:
-#    when: "'Ansible has done its job' not in item.content"
-    debug: msg="'Ansible has done its job' loaded up in page content successfully"
-    failed_when: "item.status != 200 or 'Ansible has done its job' not in item.content"
-    with_items: "{{ webpage.results }}"
+    fail:
+    when: "webpage.status != 200 or 'Ansible has done its job' not in webpage.content"
     tags:
       - osp.smoke
