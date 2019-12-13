@@ -5,11 +5,6 @@
 
 # Setup front-end load balancer tier
 
-- name: testing connectivity to frontends
-  hosts: frontends
-  wait_for_connection:
-    connect_timeout: 10
-
 - name: setup load-balancer tier
   hosts: frontends
   become: yes
@@ -18,11 +13,6 @@
     - {name: lb-tier, tags: [lbs, haproxy]}
 
 # Setup application servers tier
-
-- name: testing connectivity to apps
-  hosts: frontends
-  wait_for_connection:
-    connect_timeout: 10
 
 - name: setup app tier
   hosts: apps
@@ -33,11 +23,6 @@
     - {name: app-tier, tags: [apps, tomcat]}
 
 # Setup database tier
-
-- name: testing connectivity to appdbs
-  hosts: appdbs
-  wait_for_connection:
-    connect_timeout: 10
 
 - name: setup database tier
   become: yes
