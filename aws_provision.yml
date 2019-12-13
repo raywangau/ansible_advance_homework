@@ -2,7 +2,6 @@
 - hosts: workstation
   become: true
   gather_facts: false
-  vars_files: /tmp/aws_jq_vars.yml
   tasks:
     - name: create bin directory
       file:
